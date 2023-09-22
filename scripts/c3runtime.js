@@ -3926,7 +3926,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.AJAX,
 		C3.Plugins.Keyboard,
 		C3.Plugins.Keyboard.Cnds.OnKey,
-		C3.Plugins.AJAX.Acts.RequestFile
+		C3.Plugins.AJAX.Acts.RequestFile,
+		C3.Plugins.AJAX.Acts.Request
 	];
 };
 self.C3_JsPropNameTable = [
@@ -4032,7 +4033,9 @@ function or(l, r)
 }
 
 self.C3_ExpressionFuncs = [
-		() => ""
+		() => "",
+		() => "data/3.txt",
+		() => "data/4.txt"
 ];
 
 
