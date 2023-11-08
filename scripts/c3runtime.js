@@ -4363,6 +4363,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Cnds.CompareFrame,
 		C3.Plugins.Globals.Acts.AddInstanceVar,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
+		C3.Plugins.Text.Cnds.CompareInstanceVar,
 		C3.Plugins.System.Acts.GoToLayout,
 		C3.Plugins.Text.Acts.SetText,
 		C3.Plugins.System.Exps.tokenat,
@@ -4371,6 +4372,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Text.Exps.Text,
 		C3.Plugins.System.Acts.RestartLayout,
 		C3.Plugins.System.Cnds.OnLayoutStart,
+		C3.Plugins.Text.Acts.SetInstanceVar,
+		C3.Plugins.System.Cnds.Every,
+		C3.Plugins.Text.Acts.SubInstanceVar,
 		C3.Behaviors.Pin.Acts.PinByProperties,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Sprite.Cnds.PickByUID,
@@ -4434,6 +4438,8 @@ self.C3_JsPropNameTable = [
 	{AdvancedRandom: 0},
 	{results1: 0},
 	{Text: 0},
+	{counter: 0},
+	{count: 0},
 	{res: 0}
 ];
 }
@@ -4548,6 +4554,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpInstVar();
 		},
+		() => 3,
 		() => 4,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -4566,6 +4573,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => and("المجموعة: ", n0.ExpInstVar());
 		},
+		() => 60,
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
