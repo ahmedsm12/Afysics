@@ -3766,6 +3766,20 @@ err)}}};
 
 {
 self["C3_Shaders"] = {};
+self["C3_Shaders"]["@XorDev_DiskBlur"] = {
+	glsl: "precision highp float;\nuniform mediump float u_radius;\nvarying mediump vec2 vTex;\nuniform mediump vec2 srcOriginStart;\nuniform mediump vec2 srcOriginEnd;\nuniform mediump vec2 layoutStart;\nuniform mediump vec2 layoutEnd;\nuniform lowp sampler2D samplerFront;\n#define SAMPLES 24.0\nvoid main(void)\n{\nmediump vec4 blur = vec4(0.0, 0.0, 0.0, 0.0);\nmediump float total = 0.0;\nmediump float mip = log2(u_radius);\nmediump float scale = u_radius * inversesqrt(SAMPLES);\nhighp vec2 point = vec2(scale, 0.0);\nmediump vec2 layout_size = layoutEnd - layoutStart;\nmediump vec2 texel_size = (srcOriginEnd - srcOriginStart) / layout_size;\nmediump float rad = 1.0;\nhighp mat2 ang = mat2(-0.7373688, -0.6754904, 0.6754904,  -0.7373688);\nfor(float i = 0.0; i<SAMPLES; i++)\n{\npoint *= ang;\nrad += 1.0 / rad;\nmediump vec2 coord = vTex + point * (rad - 1.0) * texel_size;\nmediump float weight = 1.0 / rad;\nlowp vec4 samp = (clamp(vTex, 0.0, 1.0) == vTex)?\ntexture2D(samplerFront, coord, mip) : vec4(0.0, 0.0, 0.0, 0.0);\nblur += samp * weight;\ntotal += weight;\n}\nblur /= total;\ngl_FragColor = blur;\n}",
+	glslWebGL2: "",
+	wgsl: "",
+	blendsBackground: false,
+	usesDepth: false,
+	extendBoxHorizontal: 0,
+	extendBoxVertical: 0,
+	crossSampling: false,
+	mustPreDraw: false,
+	preservesOpaqueness: false,
+	animated: false,
+	parameters: [["u_radius",0,"float"]]
+};
 
 }
 
@@ -4147,6 +4161,38 @@ map.get(this)._SetPlaceholder(str)}get placeholder(){return map.get(this)._GetPl
 }
 
 {
+'use strict';{const C3=self.C3;C3.Plugins.AdvancedRandom=class AdvancedRandomPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
+{const C3=self.C3;const C3X=self.C3X;C3.Plugins.AdvancedRandom.Type=class AdvancedRandomType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}GetScriptInterfaceClass(){return self.IAdvancedRandomObjectType}};const VALID_GRADIENT_MODES=new Set(["rgb","float"]);let advancedRandomObjectType=null;function GetSdkInstance(){return advancedRandomObjectType.GetSingleGlobalInstance().GetSdkInstance()}self.IAdvancedRandomObjectType=class IAdvancedRandomObjectType extends self.IObjectClass{constructor(objectType){super(objectType);
+advancedRandomObjectType=objectType}set seed(str){C3X.RequireString(str);GetSdkInstance()._UpdateSeed(str)}get seed(){return GetSdkInstance()._GetCurrentSeed()}set octaves(num){C3X.RequireFiniteNumber(num);GetSdkInstance()._SetOctaves(num)}get octaves(){return GetSdkInstance()._GetOctaves()}classic2d(x,y){C3X.RequireNumber(x);C3X.RequireNumber(y);return GetSdkInstance()._GetClassic2d(x,y)}classic3d(x,y,z){C3X.RequireNumber(x);C3X.RequireNumber(y);C3X.RequireNumber(z);return GetSdkInstance()._GetClassic3d(x,
+y,z)}billow2d(x,y){C3X.RequireNumber(x);C3X.RequireNumber(y);return GetSdkInstance()._GetBillow2d(x,y)}billow3d(x,y,z){C3X.RequireNumber(x);C3X.RequireNumber(y);C3X.RequireNumber(z);return GetSdkInstance()._GetBillow3d(x,y,z)}ridged2d(x,y){C3X.RequireNumber(x);C3X.RequireNumber(y);return GetSdkInstance()._GetRidged2d(x,y)}ridged3d(x,y,z){C3X.RequireNumber(x);C3X.RequireNumber(y);C3X.RequireNumber(z);return GetSdkInstance()._GetRidged3d(x,y,z)}cellular2d(x,y){C3X.RequireNumber(x);C3X.RequireNumber(y);
+return GetSdkInstance()._GetCellular2d(x,y)}cellular3d(x,y,z){C3X.RequireNumber(x);C3X.RequireNumber(y);C3X.RequireNumber(z);return GetSdkInstance()._GetCellular3d(x,y,z)}voronoi2d(x,y){C3X.RequireNumber(x);C3X.RequireNumber(y);return GetSdkInstance()._GetVoronoi2d(x,y)}voronoi3d(x,y,z){C3X.RequireNumber(x);C3X.RequireNumber(y);C3X.RequireNumber(z);return GetSdkInstance()._GetVoronoi3d(x,y,z)}createGradient(name,mode){C3X.RequireString(name);if(!VALID_GRADIENT_MODES.has(mode))throw new Error("invalid mode");
+GetSdkInstance()._CreateGradient(name,mode)}setCurrentGradient(name){C3X.RequireString(name);GetSdkInstance()._SetGradient(name)}addGradientStop(position,value){C3X.RequireNumber(position);C3X.RequireNumber(value);GetSdkInstance()._AddGradientStop(position,value)}sampleGradient(name,value){C3X.RequireOptionalString(name);C3X.RequireNumber(value);if(name)return GetSdkInstance()._SampleGradientByName(name,value);else return GetSdkInstance()._SampleCurrentGradient(value)}createProbabilityTable(name){C3X.RequireString(name);
+GetSdkInstance()._CreateProbabilityTable(name)}createProbabilityTableFromJSON(name,jsonStr){C3X.RequireString(name);C3X.RequireString(jsonStr);GetSdkInstance()._CreateProbabilityTableFromJSON(name,jsonStr)}getProbabilityTableAsJSON(){return GetSdkInstance()._GetProbabilityTableAsJSON()}setCurrentProbabilityTable(name){C3X.RequireString(name);GetSdkInstance()._SetProbabilityTable(name)}addProbabilityTableEntry(weight,value){C3X.RequireNumber(weight);if(typeof value!=="number"&&typeof value!=="string")throw new TypeError("invalid value");
+GetSdkInstance()._AddProbabilityEntry(weight,value)}removeProbabilityTableEntry(weight,value){C3X.RequireNumber(weight);if(typeof value!=="number"&&typeof value!=="string")throw new TypeError("invalid value");GetSdkInstance()._RemoveProbabilityEntry(weight,value)}sampleProbabilityTable(name){C3X.RequireOptionalString(name);if(name)return GetSdkInstance()._SampleProbabilityTableByName(name);else return GetSdkInstance()._SampleCurrentProbabilityTable()}createPermutationTable(length,offset){C3X.RequireFiniteNumber(length);
+C3X.RequireNumber(offset);GetSdkInstance()._CreatePermutationTable(length,offset)}shufflePermutationTable(){GetSdkInstance()._ShufflePermutationTable()}getPermutation(index){C3X.RequireFiniteNumber(index);return GetSdkInstance()._GetPermutation(index)}}}
+{const C3=self.C3;function shuffle(arr,rnd){let m=arr.length;while(m>0){const i=Math.floor(rnd(0,m--));const t=arr[m];arr[m]=arr[i];arr[i]=t}return arr}class Gradient{constructor(mode,name){this.mode=mode;this.name=name;this.stops=[]}GetName(){return this.name}AddStop(position,value){switch(this.mode){case "rgb":value=this._CreateStopRGB(value);break;case "float":value=this._CreateStopFloat(value);break}let i=this.stops.length;while(i--)if(position>this.stops[i][0]){this.stops.splice(i+1,0,[position,
+value]);return}this.stops.push([position,value])}_CreateStopFloat(value){return[value]}_CreateStopRGB(value){const r=C3.GetRValue(value);const g=C3.GetGValue(value);const b=C3.GetBValue(value);return[value,r,g,b,C3.GetAValue(value)]}_SampleFloat(a,b,t){return C3.lerp(a[0],b[0],t)}_SampleRGB(a,b,t){return C3.PackRGBAEx(C3.lerp(a[1],b[1],t),C3.lerp(a[2],b[2],t),C3.lerp(a[3],b[3],t),C3.lerp(a[4],b[4],t))}Sample(t){const stops=this.stops;const first=stops[0];const length=stops.length;const last=stops[length-
+1];if(t<first[0])return first[1][0];if(t>last[0])return last[1][0];let a=null;let b=first;for(let i=1;i<length;i++){a=b;b=stops[i];if(b[0]>t)break}t=C3.clamp((t-a[0])/(b[0]-a[0]),0,1);switch(this.mode){case "rgb":return this._SampleRGB(a[1],b[1],t);case "float":return this._SampleFloat(a[1],b[1],t)}}asJSON(debug=false){if(this.mode==="rgb")return JSON.stringify(this.stops.map(([pos,value])=>[pos,debug?value.slice(1):value[0]]));else return JSON.stringify(this.stops)}}let replaceSystemPRNG=false;C3.Plugins.AdvancedRandom.Instance=
+class AdvancedRandomInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst);this._core=null;this._currentSeed="";this._octaves=1;this._lacunarity=2;this._persistence=.5;this._gradients=new Map;this._probabilityTables=new Map;this._currentGradient=null;this._currentProbabilityTable=null;this._permutation=[0];const seed=properties[0];replaceSystemPRNG=properties[1];this._CreateGradient("default","rgb");this._AddGradientStop(0,C3.PackRGBEx(0,0,0));this._AddGradientStop(1,C3.PackRGBEx(1,
+1,1));this._CreateProbabilityTable("default");this._runtime.AddLoadPromise(this._Init(seed))}async _Init(seed){const mod=await this._InstatiateWASMModule();this._core=mod["instance"]["exports"];if(seed==="")seed=this._RandomSeed(10);this._UpdateSeed(seed);if(replaceSystemPRNG)this._runtime.SetRandomNumberGeneratorCallback(()=>this._core["randomXorshiro"](0,1))}async _InstatiateWASMModule(){const blob=await this._runtime.GetAssetManager().FetchBlob("noise.wasm");const res=new Response(blob,{"headers":{"content-type":"application/wasm"}});
+if(this._SupportsWASMStreamingInstantiation())return WebAssembly["instantiateStreaming"](res);else{const buffer=await res.arrayBuffer();return WebAssembly["instantiate"](buffer)}}_SupportsWASMStreamingInstantiation(){return typeof WebAssembly["instantiateStreaming"]==="function"}Release(){super.Release()}_RandomSeed(l){const min=65;const max=90;const delta=max-min;const chars=[];while(l--)chars.push(String.fromCharCode(Math.round(Math.random()*delta)+min));return chars.join("")}_UpdateSeed(str){this._currentSeed=
+str;let h=5381;for(let i=0,l=str.length;i<l;i++)h=(h<<5)+h+str.charCodeAt(i);h>>>=0;this._core["seed"](h)}_GetCurrentSeed(){return this._currentSeed}_SetOctaves(num){this._octaves=C3.clamp(num|0,1,16)}_GetOctaves(){return this._octaves}_GetClassic2d(x,y){return this._core["classic2d"](x,y,this._octaves)}_GetClassic3d(x,y,z){return this._core["classic3d"](x,y,z,this._octaves)}_GetBillow2d(x,y){return this._core["billow2d"](x,y,this._octaves)}_GetBillow3d(x,y,z){return this._core["billow3d"](x,y,z,
+this._octaves)}_GetRidged2d(x,y){return this._core["ridged2d"](x,y,this._octaves)}_GetRidged3d(x,y,z){return this._core["ridged3d"](x,y,z,this._octaves)}_GetCellular2d(x,y){return this._core["cellular2d"](x,y)}_GetCellular3d(x,y,z){return this._core["cellular3d"](x,y,z)}_GetVoronoi2d(x,y){return this._core["voronoi2d"](x,y)}_GetVoronoi3d(x,y,z){return this._core["voronoi3d"](x,y,z)}_CreateGradient(name,mode){const grad=new Gradient(mode,name);this._gradients.set(name.toLowerCase(),grad);this._currentGradient=
+grad}_SetGradient(name){this._currentGradient=this._gradients.get(name.toLowerCase())||null}_AddGradientStop(position,value){const grad=this._currentGradient;if(grad===null)return;grad.AddStop(position,value)}_SampleCurrentGradient(value){const grad=this._currentGradient;if(!grad)return 0;return grad.Sample(value)}_SampleGradientByName(name,value){const grad=this._gradients.get(name.toLowerCase());if(!grad)return 0;return grad.Sample(value)}_CreateProbabilityTable(name){const table=new C3.ProbabilityTable(name);
+this._probabilityTables.set(name.toLowerCase(),table);this._currentProbabilityTable=table}_CreateProbabilityTableFromJSON(name,str){const table=C3.ProbabilityTable.fromJSON(str);this._probabilityTables.set(name.toLowerCase(),table);this._currentProbabilityTable=table}_GetProbabilityTableAsJSON(){if(!this._currentProbabilityTable)return"";return this._currentProbabilityTable.asJSON()}_SetProbabilityTable(name){this._currentProbabilityTable=this._probabilityTables.get(name.toLowerCase())||null}_AddProbabilityEntry(weight,
+value){const table=this._currentProbabilityTable;if(!table)return;table.AddItem(weight,value)}_RemoveProbabilityEntry(weight,value){const table=this._currentProbabilityTable;if(!table)return;table.RemoveItem(weight,value)}_SampleCurrentProbabilityTable(){const table=this._currentProbabilityTable;if(!table)return 0;return table.Sample(this._core["randomXorshiro"](0,table.GetTotalWeight()))}_SampleProbabilityTableByName(name){const table=this._probabilityTables.get(name.toLowerCase());if(!table)return 0;
+return table.Sample(this._core["randomXorshiro"](0,table.GetTotalWeight()))}_CreatePermutationTable(length,offset){if(length<2)this._permutation=[offset];else{this._permutation=[];for(let i=0;i<length;i++)this._permutation.push(i+offset);shuffle(this._permutation,this._core["randomXorshiro"])}}_ShufflePermutationTable(){shuffle(this._permutation,this._core["randomXorshiro"])}_GetPermutation(index){index=Math.floor(index);const arr=this._permutation;const len=arr.length;index=index%len;if(index<0)index+=
+len;return arr[index]}GetDebuggerProperties(){const prefix="plugins.advancedrandom.debugger";const gradient_rows=[];const probability_rows=[];const padList=str=>str.toString().replace(/,/g,", ");for(const table of this._probabilityTables.values()){const str=table.asJSON();probability_rows.push({name:"$"+table.GetName(),value:padList(str.slice(1,-1))})}for(const gradient of this._gradients.values()){const str=gradient.asJSON(true);gradient_rows.push({name:"$"+gradient.GetName(),value:padList(str.slice(1,
+-1))})}return[{title:prefix+".title",properties:[{name:prefix+".seed",value:this._GetCurrentSeed(),onedit:v=>this._UpdateSeed(v)},{name:prefix+".replace-system",value:replaceSystemPRNG},{name:prefix+".noise-octaves",value:this._GetOctaves()},{name:prefix+".noise-lacunarity",value:this._lacunarity},{name:prefix+".noise-persistence",value:this._persistence},{name:prefix+".current-probability-table",value:this._currentProbabilityTable?this._currentProbabilityTable.GetName():""},{name:prefix+".current-gradient",
+value:this._currentGradient?this._currentGradient.GetName():""},{name:prefix+".permutation-table",value:padList(this._permutation)}]},{title:prefix+".gradients",properties:gradient_rows},{title:prefix+".probability-tables",properties:probability_rows}]}}}{const C3=self.C3;C3.Plugins.AdvancedRandom.Cnds={}}
+{const C3=self.C3;C3.Plugins.AdvancedRandom.Acts={SetSeed(str){this._UpdateSeed(str)},SetOctaves(num){this._SetOctaves(num)},CreateGradient(name,isColor){const mode=["rgb","float"][isColor];this._CreateGradient(name,mode)},SetGradient(name){this._SetGradient(name)},AddStop(position,value){this._AddGradientStop(position,value)},CreateProbabilityTable(name){this._CreateProbabilityTable(name)},CreateProbabilityTableFromJSON(name,str){try{this._CreateProbabilityTableFromJSON(name,str)}catch(e){console.warn("Failed to create probability table from JSON String",
+e)}},SetProbabilityTable(name){this._SetProbabilityTable(name)},AddProbabilityEntry(value,weight){this._AddProbabilityEntry(weight,value)},RemoveProbabilityEntry(value,weight){this._RemoveProbabilityEntry(weight,value)},CreatePermutationTable(length,offset){this._CreatePermutationTable(length,offset)},ShufflePermutationTable(){this._ShufflePermutationTable()}}}
+{const C3=self.C3;C3.Plugins.AdvancedRandom.Exps={Classic2d(x,y){return this._GetClassic2d(x,y)},Classic3d(x,y,z){return this._GetClassic3d(x,y,z)},Billow2d(x,y){return this._GetBillow2d(x,y)},Billow3d(x,y,z){return this._GetBillow3d(x,y,z)},Ridged2d(x,y){return this._GetRidged2d(x,y)},Ridged3d(x,y,z){return this._GetRidged3d(x,y,z)},Cellular2d(x,y){return this._GetCellular2d(x,y)},Cellular3d(x,y,z){return this._GetCellular3d(x,y,z)},Voronoi2d(x,y){return this._GetVoronoi2d(x,y)},Voronoi3d(x,y,z){return this._GetVoronoi3d(x,
+y,z)},Gradient(value){return this._SampleCurrentGradient(value)},GradientByName(name,value){return this._SampleGradientByName(name,value)},Weighted(){return this._SampleCurrentProbabilityTable()},WeightedByName(name){return this._SampleProbabilityTableByName(name)},RandomSeed(){return this._RandomSeed(10)},Seed(){return this._GetCurrentSeed()},Octaves(){return this._GetOctaves()},Permutation(i){return this._GetPermutation(i)},ProbabilityTableAsJSON(){return this._GetProbabilityTableAsJSON()}}};
+
+}
+
+{
 'use strict';{const C3=self.C3;C3.Behaviors.DragnDrop=class DragnDropBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts);const rt=this._runtime.Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,"pointerdown",e=>this._OnPointerDown(e.data)),C3.Disposable.From(rt,"pointermove",e=>this._OnPointerMove(e.data)),C3.Disposable.From(rt,"pointerup",e=>this._OnPointerUp(e.data,false)),C3.Disposable.From(rt,"pointercancel",e=>this._OnPointerUp(e.data,true)))}Release(){this._disposables.Release();
 this._disposables=null;super.Release()}_OnPointerDown(e){if(e["pointerType"]==="mouse"&&e["button"]!==0)return;this._OnInputDown(e["pointerId"].toString(),e["pageX"]-this._runtime.GetCanvasClientX(),e["pageY"]-this._runtime.GetCanvasClientY())}_OnPointerMove(e){if((e["lastButtons"]&1)!==0&&(e["buttons"]&1)===0)this._OnInputUp(e["pointerId"].toString());else this._OnInputMove(e["pointerId"].toString(),e["pageX"]-this._runtime.GetCanvasClientX(),e["pageY"]-this._runtime.GetCanvasClientY())}_OnPointerUp(e,
 isCancel){if(e["pointerType"]==="mouse"&&e["button"]!==0)return;this._OnInputUp(e["pointerId"].toString())}async _OnInputDown(src,clientX,clientY){const myInstances=this.GetInstances();let topMost=null;let topBehInst=null;let topX=0;let topY=0;for(const inst of myInstances){const behInst=inst.GetBehaviorSdkInstanceFromCtor(C3.Behaviors.DragnDrop);if(!behInst.IsEnabled()||behInst.IsDragging()||inst.IsDestroyed())continue;const wi=inst.GetWorldInfo();const layer=wi.GetLayer();const [lx,ly]=layer.CanvasCssToLayer(clientX,
@@ -4160,40 +4206,6 @@ case ENABLE:return this.IsEnabled()}}SetPropertyValueByIndex(index,value){switch
 properties:[{name:prefix+".debugger.is-dragging",value:this.IsDragging()},{name:axesPrefix+".name",value:[axesName]},{name:prefix+".properties.enabled.name",value:this.IsEnabled(),onedit:v=>this._SetEnabled(v)}]}]}GetScriptInterfaceClass(){return self.IDragDropBehaviorInstance}};const map=new WeakMap;const VALID_AXES=["both","horizontal","vertical"];self.IDragDropBehaviorInstance=class IDragDropBehaviorInstance extends IBehaviorInstance{constructor(){super();map.set(this,IBehaviorInstance._GetInitInst().GetSdkInstance())}set axes(str){const a=
 VALID_AXES.indexOf(str);if(a===-1)throw new Error("invalid axes");map.get(this)._SetAxes(a)}get axes(){return VALID_AXES[map.get(this)._GetAxes()]}drop(){map.get(this)._Drop()}get isDragging(){return map.get(this).IsDragging()}get isEnabled(){return map.get(this).IsEnabled()}set isEnabled(e){map.get(this)._SetEnabled(e)}}}{const C3=self.C3;C3.Behaviors.DragnDrop.Cnds={IsDragging(){return this.IsDragging()},OnDragStart(){return true},OnDrop(){return true},IsEnabled(){return this.IsEnabled()}}}
 {const C3=self.C3;C3.Behaviors.DragnDrop.Acts={SetEnabled(e){this._SetEnabled(!!e)},SetAxes(a){this._SetAxes(a)},Drop(){this._Drop()}}}{const C3=self.C3;C3.Behaviors.DragnDrop.Exps={}};
-
-}
-
-{
-'use strict';{const C3=self.C3;C3.Behaviors.Pin=class PinBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Pin.Type=class PinType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;C3.Behaviors.Pin.Instance=class PinInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._pinInst=null;this._pinUid=-1;this._mode="";this._propSet=new Set;this._pinDist=0;this._pinAngle=0;this._pinImagePoint=0;this._dx=0;this._dy=0;this._dWidth=0;this._dHeight=0;this._dAngle=0;this._dz=0;this._lastKnownAngle=0;this._destroy=false;if(properties)this._destroy=properties[0];const rt=this._runtime.Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,
-"instancedestroy",e=>this._OnInstanceDestroyed(e.instance)),C3.Disposable.From(rt,"afterload",e=>this._OnAfterLoad()))}Release(){this._pinInst=null;super.Release()}_SetPinInst(inst){if(inst){this._pinInst=inst;this._StartTicking2()}else{this._pinInst=null;this._StopTicking2()}}_Pin(objectClass,mode,propList){if(!objectClass)return;const otherInst=objectClass.GetFirstPicked(this._inst);if(!otherInst)return;this._mode=mode;this._SetPinInst(otherInst);const myWi=this._inst.GetWorldInfo();const otherWi=
-otherInst.GetWorldInfo();if(this._mode==="properties"){const propSet=this._propSet;propSet.clear();for(const p of propList)propSet.add(p);this._dx=myWi.GetX()-otherWi.GetX();this._dy=myWi.GetY()-otherWi.GetY();this._dAngle=myWi.GetAngle()-otherWi.GetAngle();this._lastKnownAngle=myWi.GetAngle();this._dz=myWi.GetZElevation()-otherWi.GetZElevation();if(propSet.has("x")&&propSet.has("y")){this._pinAngle=C3.angleTo(otherWi.GetX(),otherWi.GetY(),myWi.GetX(),myWi.GetY())-otherWi.GetAngle();this._pinDist=
-C3.distanceTo(otherWi.GetX(),otherWi.GetY(),myWi.GetX(),myWi.GetY())}if(propSet.has("width-abs"))this._dWidth=myWi.GetWidth()-otherWi.GetWidth();else if(propSet.has("width-scale"))this._dWidth=myWi.GetWidth()/otherWi.GetWidth();if(propSet.has("height-abs"))this._dHeight=myWi.GetHeight()-otherWi.GetHeight();else if(propSet.has("height-scale"))this._dHeight=myWi.GetHeight()/otherWi.GetHeight()}else this._pinDist=C3.distanceTo(otherWi.GetX(),otherWi.GetY(),myWi.GetX(),myWi.GetY())}SaveToJson(){const propSet=
-this._propSet;const mode=this._mode;const ret={"uid":this._pinInst?this._pinInst.GetUID():-1,"m":mode,"d":this._destroy};if(mode==="rope"||mode==="bar")ret["pd"]=this._pinDist;else if(mode==="properties"){ret["ps"]=[...this._propSet];if(propSet.has("imagepoint"))ret["ip"]=this._pinImagePoint;else if(propSet.has("x")&&propSet.has("y")){ret["pa"]=this._pinAngle;ret["pd"]=this._pinDist}else{if(propSet.has("x"))ret["dx"]=this._dx;if(propSet.has("y"))ret["dy"]=this._dy}if(propSet.has("angle")){ret["da"]=
-this._dAngle;ret["lka"]=this._lastKnownAngle}if(propSet.has("width-abs")||propSet.has("width-scale"))ret["dw"]=this._dWidth;if(propSet.has("height-abs")||propSet.has("height-scale"))ret["dh"]=this._dHeight;if(propSet.has("z"))ret["dz"]=this._dz}return ret}LoadFromJson(o){const mode=o["m"];const propSet=this._propSet;propSet.clear();this._pinUid=o["uid"];if(typeof mode==="number"){this._LoadFromJson_Legacy(o);return}this._mode=mode;if(o.hasOwnProperty("d"))this._destroy=!!o["d"];if(mode==="rope"||
-mode==="bar")this._pinDist=o["pd"];else if(mode==="properties"){for(const p of o["ps"])propSet.add(p);if(propSet.has("imagepoint"))this._pinImagePoint=o["ip"];else if(propSet.has("x")&&propSet.has("y")){this._pinAngle=o["pa"];this._pinDist=o["pd"]}else{if(propSet.has("x"))this._dx=o["dx"];if(propSet.has("y"))this._dy=o["dy"]}if(propSet.has("angle")){this._dAngle=o["da"];this._lastKnownAngle=o["lka"]||0}if(propSet.has("width-abs")||propSet.has("width-scale"))this._dWidth=o["dw"];if(propSet.has("height-abs")||
-propSet.has("height-scale"))this._dHeight=o["dh"];if(propSet.has("z"))this._dz=o["dz"]}}_LoadFromJson_Legacy(o){const propSet=this._propSet;const myStartAngle=o["msa"];const theirStartAngle=o["tsa"];const pinAngle=o["pa"];const pinDist=o["pd"];const mode=o["m"];switch(mode){case 0:this._mode="properties";propSet.add("x").add("y").add("angle");this._pinAngle=pinAngle;this._pinDist=pinDist;this._dAngle=myStartAngle-theirStartAngle;this._lastKnownAngle=o["lka"];break;case 1:this._mode="properties";propSet.add("x").add("y");
-this._pinAngle=pinAngle;this._pinDist=pinDist;break;case 2:this._mode="properties";propSet.add("angle");this._dAngle=myStartAngle-theirStartAngle;this._lastKnownAngle=o["lka"];break;case 3:this._mode="rope";this._pinDist=o["pd"];break;case 4:this._mode="bar";this._pinDist=o["pd"];break}}_OnAfterLoad(){if(this._pinUid===-1)this._SetPinInst(null);else{this._SetPinInst(this._runtime.GetInstanceByUID(this._pinUid));this._pinUid=-1}}_OnInstanceDestroyed(inst){if(this._pinInst===inst){this._SetPinInst(null);
-if(this._destroy)this._runtime.DestroyInstance(this._inst)}}Tick2(){const pinInst=this._pinInst;if(!pinInst)return;const pinWi=pinInst.GetWorldInfo();const myInst=this._inst;const myWi=myInst.GetWorldInfo();const mode=this._mode;let bboxChanged=false;if(mode==="rope"||mode==="bar"){const dist=C3.distanceTo(myWi.GetX(),myWi.GetY(),pinWi.GetX(),pinWi.GetY());if(dist>this._pinDist||mode==="bar"&&dist<this._pinDist){const a=C3.angleTo(pinWi.GetX(),pinWi.GetY(),myWi.GetX(),myWi.GetY());myWi.SetXY(pinWi.GetX()+
-Math.cos(a)*this._pinDist,pinWi.GetY()+Math.sin(a)*this._pinDist);bboxChanged=true}}else{const propSet=this._propSet;let v=0;if(propSet.has("imagepoint")){const [newX,newY]=pinInst.GetImagePoint(this._pinImagePoint);if(!myWi.EqualsXY(newX,newY)){myWi.SetXY(newX,newY);bboxChanged=true}}else if(propSet.has("x")&&propSet.has("y")){const newX=pinWi.GetX()+Math.cos(pinWi.GetAngle()+this._pinAngle)*this._pinDist;const newY=pinWi.GetY()+Math.sin(pinWi.GetAngle()+this._pinAngle)*this._pinDist;if(!myWi.EqualsXY(newX,
-newY)){myWi.SetXY(newX,newY);bboxChanged=true}}else{v=pinWi.GetX()+this._dx;if(propSet.has("x")&&v!==myWi.GetX()){myWi.SetX(v);bboxChanged=true}v=pinWi.GetY()+this._dy;if(propSet.has("y")&&v!==myWi.GetY()){myWi.SetY(v);bboxChanged=true}}if(propSet.has("angle")){if(this._lastKnownAngle!==myWi.GetAngle())this._dAngle=C3.clampAngle(this._dAngle+(myWi.GetAngle()-this._lastKnownAngle));v=C3.clampAngle(pinWi.GetAngle()+this._dAngle);if(v!==myWi.GetAngle()){myWi.SetAngle(v);bboxChanged=true}this._lastKnownAngle=
-myWi.GetAngle()}if(propSet.has("width-abs")){v=pinWi.GetWidth()+this._dWidth;if(v!==myWi.GetWidth()){myWi.SetWidth(v);bboxChanged=true}}if(propSet.has("width-scale")){v=pinWi.GetWidth()*this._dWidth;if(v!==myWi.GetWidth()){myWi.SetWidth(v);bboxChanged=true}}if(propSet.has("height-abs")){v=pinWi.GetHeight()+this._dHeight;if(v!==myWi.GetHeight()){myWi.SetHeight(v);bboxChanged=true}}if(propSet.has("height-scale")){v=pinWi.GetHeight()*this._dHeight;if(v!==myWi.GetHeight()){myWi.SetHeight(v);bboxChanged=
-true}}if(propSet.has("z")){v=pinWi.GetZElevation()+this._dz;if(v!==myWi.GetZElevation()){myWi.SetZElevation(v);this._runtime.UpdateRender()}}}if(bboxChanged)myWi.SetBboxChanged()}GetDebuggerProperties(){const prefix="behaviors.pin.debugger";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".is-pinned",value:!!this._pinInst},{name:prefix+".pinned-uid",value:this._pinInst?this._pinInst.GetUID():0}]}]}}}
-{const C3=self.C3;C3.Behaviors.Pin.Cnds={IsPinned(){return!!this._pinInst},WillDestroy(){return this._destroy}}}
-{const C3=self.C3;C3.Behaviors.Pin.Acts={PinByDistance(objectClass,mode){this._Pin(objectClass,mode===0?"rope":"bar")},PinByProperties(objectClass,ex,ey,ea,ew,eh,ez){const propList=[];if(ex)propList.push("x");if(ey)propList.push("y");if(ea)propList.push("angle");if(ez)propList.push("z");if(ew===1)propList.push("width-abs");else if(ew===2)propList.push("width-scale");if(eh===1)propList.push("height-abs");else if(eh===2)propList.push("height-scale");if(propList.length===0)return;this._Pin(objectClass,
-"properties",propList)},PinByImagePoint(objectClass,imgPt,ea,ew,eh,ez){const propList=["imagepoint"];if(ea)propList.push("angle");if(ez)propList.push("z");if(ew===1)propList.push("width-abs");else if(ew===2)propList.push("width-scale");if(eh===1)propList.push("height-abs");else if(eh===2)propList.push("height-scale");this._pinImagePoint=imgPt;this._Pin(objectClass,"properties",propList)},SetPinDistance(d){if(this._mode==="rope"||this._mode==="bar")this._pinDist=Math.max(d,0)},SetDestroy(d){this._destroy=
-d},Unpin(){this._SetPinInst(null);this._mode="";this._propSet.clear();this._pinImagePoint=""},Pin(objectClass,mode){switch(mode){case 0:this._Pin(objectClass,"properties",["x","y","angle"]);break;case 1:this._Pin(objectClass,"properties",["x","y"]);break;case 2:this._Pin(objectClass,"properties",["angle"]);break;case 3:this._Pin(objectClass,"rope");break;case 4:this._Pin(objectClass,"bar");break}}}}{const C3=self.C3;C3.Behaviors.Pin.Exps={PinnedUID(){return this._pinInst?this._pinInst.GetUID():-1}}};
-
-}
-
-{
-'use strict';{const C3=self.C3;C3.Behaviors.Rotate=class RotateBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Rotate.Type=class RotateType extends C3.SDKBehaviorTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;const C3X=self.C3X;const IBehaviorInstance=self.IBehaviorInstance;const SPEED=0;const ACCELERATION=1;const ENABLE=2;C3.Behaviors.Rotate.Instance=class RotateInstance extends C3.SDKBehaviorInstanceBase{constructor(inst,properties){super(inst);this._speed=0;this._acceleration=0;this._isEnabled=true;if(properties){this._speed=C3.toRadians(properties[SPEED]);this._acceleration=C3.toRadians(properties[ACCELERATION]);this._isEnabled=properties[ENABLE]}if(this._isEnabled)this._StartTicking()}Release(){super.Release()}_SetSpeed(s){this._speed=
-s}_GetSpeed(){return this._speed}_SetAcceleration(a){this._acceleration=a}_GetAcceleration(){return this._acceleration}SaveToJson(){return{"s":this._speed,"a":this._acceleration,"e":this._isEnabled}}LoadFromJson(o){this._speed=o["s"];this._acceleration=o["a"];this._SetEnabled(o["e"])}Tick(){if(!this._isEnabled)return;const dt=this._runtime.GetDt(this._inst);if(dt===0)return;if(this._acceleration!==0)this._speed+=this._acceleration*dt;if(this._speed!==0){const wi=this._inst.GetWorldInfo();wi.SetAngle(wi.GetAngle()+
-this._speed*dt);wi.SetBboxChanged()}}GetPropertyValueByIndex(index){switch(index){case SPEED:return C3.toDegrees(this._GetSpeed());case ACCELERATION:return C3.toDegrees(this._GetAcceleration());case ENABLE:return this._IsEnabled()}}SetPropertyValueByIndex(index,value){switch(index){case SPEED:this._SetSpeed(C3.toRadians(value));break;case ACCELERATION:this._SetAcceleration(C3.toRadians(value));break;case ENABLE:this._SetEnabled(value);break}}_SetEnabled(e){this._isEnabled=!!e;if(this._isEnabled)this._StartTicking();
-else this._StopTicking()}_IsEnabled(){return this._isEnabled}GetDebuggerProperties(){const prefix="behaviors.rotate";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".properties.speed.name",value:C3.toDegrees(this._GetSpeed()),onedit:v=>this._SetSpeed(C3.toRadians(v))},{name:prefix+".properties.acceleration.name",value:C3.toDegrees(this._GetAcceleration()),onedit:v=>this._SetAcceleration(C3.toRadians(v))},{name:prefix+".properties.enabled.name",value:this._IsEnabled(),
-onedit:v=>this._SetEnabled(v)}]}]}GetScriptInterfaceClass(){return self.IRotateBehaviorInstance}};const map=new WeakMap;self.IRotateBehaviorInstance=class IRotateBehaviorInstance extends IBehaviorInstance{constructor(){super();map.set(this,IBehaviorInstance._GetInitInst().GetSdkInstance())}set speed(s){C3X.RequireFiniteNumber(s);map.get(this)._SetSpeed(s)}get speed(){return map.get(this)._GetSpeed()}set acceleration(a){C3X.RequireFiniteNumber(a);map.get(this)._SetAcceleration(a)}get acceleration(){return map.get(this)._GetAcceleration()}get isEnabled(){return map.get(this)._IsEnabled()}set isEnabled(e){map.get(this)._SetEnabled(e)}}}
-{const C3=self.C3;C3.Behaviors.Rotate.Cnds={IsEnabled(){return this._IsEnabled()}}}{const C3=self.C3;C3.Behaviors.Rotate.Acts={SetSpeed(s){this._SetSpeed(C3.toRadians(s))},SetAcceleration(a){this._SetAcceleration(C3.toRadians(a))},SetEnabled(e){this._SetEnabled(e)}}}{const C3=self.C3;C3.Behaviors.Rotate.Exps={Speed(){return C3.toDegrees(this._GetSpeed())},Acceleration(){return C3.toDegrees(this._GetAcceleration())}}};
 
 }
 
@@ -4289,58 +4301,101 @@ opts.tags,opts.startValue,endValue,time,easeIndex,!!opts.destroyOnComplete,!!opt
 }
 
 {
+'use strict';{const C3=self.C3;C3.Behaviors.Pin=class PinBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Pin.Type=class PinType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;C3.Behaviors.Pin.Instance=class PinInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._pinInst=null;this._pinUid=-1;this._mode="";this._propSet=new Set;this._pinDist=0;this._pinAngle=0;this._pinImagePoint=0;this._dx=0;this._dy=0;this._dWidth=0;this._dHeight=0;this._dAngle=0;this._dz=0;this._lastKnownAngle=0;this._destroy=false;if(properties)this._destroy=properties[0];const rt=this._runtime.Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,
+"instancedestroy",e=>this._OnInstanceDestroyed(e.instance)),C3.Disposable.From(rt,"afterload",e=>this._OnAfterLoad()))}Release(){this._pinInst=null;super.Release()}_SetPinInst(inst){if(inst){this._pinInst=inst;this._StartTicking2()}else{this._pinInst=null;this._StopTicking2()}}_Pin(objectClass,mode,propList){if(!objectClass)return;const otherInst=objectClass.GetFirstPicked(this._inst);if(!otherInst)return;this._mode=mode;this._SetPinInst(otherInst);const myWi=this._inst.GetWorldInfo();const otherWi=
+otherInst.GetWorldInfo();if(this._mode==="properties"){const propSet=this._propSet;propSet.clear();for(const p of propList)propSet.add(p);this._dx=myWi.GetX()-otherWi.GetX();this._dy=myWi.GetY()-otherWi.GetY();this._dAngle=myWi.GetAngle()-otherWi.GetAngle();this._lastKnownAngle=myWi.GetAngle();this._dz=myWi.GetZElevation()-otherWi.GetZElevation();if(propSet.has("x")&&propSet.has("y")){this._pinAngle=C3.angleTo(otherWi.GetX(),otherWi.GetY(),myWi.GetX(),myWi.GetY())-otherWi.GetAngle();this._pinDist=
+C3.distanceTo(otherWi.GetX(),otherWi.GetY(),myWi.GetX(),myWi.GetY())}if(propSet.has("width-abs"))this._dWidth=myWi.GetWidth()-otherWi.GetWidth();else if(propSet.has("width-scale"))this._dWidth=myWi.GetWidth()/otherWi.GetWidth();if(propSet.has("height-abs"))this._dHeight=myWi.GetHeight()-otherWi.GetHeight();else if(propSet.has("height-scale"))this._dHeight=myWi.GetHeight()/otherWi.GetHeight()}else this._pinDist=C3.distanceTo(otherWi.GetX(),otherWi.GetY(),myWi.GetX(),myWi.GetY())}SaveToJson(){const propSet=
+this._propSet;const mode=this._mode;const ret={"uid":this._pinInst?this._pinInst.GetUID():-1,"m":mode,"d":this._destroy};if(mode==="rope"||mode==="bar")ret["pd"]=this._pinDist;else if(mode==="properties"){ret["ps"]=[...this._propSet];if(propSet.has("imagepoint"))ret["ip"]=this._pinImagePoint;else if(propSet.has("x")&&propSet.has("y")){ret["pa"]=this._pinAngle;ret["pd"]=this._pinDist}else{if(propSet.has("x"))ret["dx"]=this._dx;if(propSet.has("y"))ret["dy"]=this._dy}if(propSet.has("angle")){ret["da"]=
+this._dAngle;ret["lka"]=this._lastKnownAngle}if(propSet.has("width-abs")||propSet.has("width-scale"))ret["dw"]=this._dWidth;if(propSet.has("height-abs")||propSet.has("height-scale"))ret["dh"]=this._dHeight;if(propSet.has("z"))ret["dz"]=this._dz}return ret}LoadFromJson(o){const mode=o["m"];const propSet=this._propSet;propSet.clear();this._pinUid=o["uid"];if(typeof mode==="number"){this._LoadFromJson_Legacy(o);return}this._mode=mode;if(o.hasOwnProperty("d"))this._destroy=!!o["d"];if(mode==="rope"||
+mode==="bar")this._pinDist=o["pd"];else if(mode==="properties"){for(const p of o["ps"])propSet.add(p);if(propSet.has("imagepoint"))this._pinImagePoint=o["ip"];else if(propSet.has("x")&&propSet.has("y")){this._pinAngle=o["pa"];this._pinDist=o["pd"]}else{if(propSet.has("x"))this._dx=o["dx"];if(propSet.has("y"))this._dy=o["dy"]}if(propSet.has("angle")){this._dAngle=o["da"];this._lastKnownAngle=o["lka"]||0}if(propSet.has("width-abs")||propSet.has("width-scale"))this._dWidth=o["dw"];if(propSet.has("height-abs")||
+propSet.has("height-scale"))this._dHeight=o["dh"];if(propSet.has("z"))this._dz=o["dz"]}}_LoadFromJson_Legacy(o){const propSet=this._propSet;const myStartAngle=o["msa"];const theirStartAngle=o["tsa"];const pinAngle=o["pa"];const pinDist=o["pd"];const mode=o["m"];switch(mode){case 0:this._mode="properties";propSet.add("x").add("y").add("angle");this._pinAngle=pinAngle;this._pinDist=pinDist;this._dAngle=myStartAngle-theirStartAngle;this._lastKnownAngle=o["lka"];break;case 1:this._mode="properties";propSet.add("x").add("y");
+this._pinAngle=pinAngle;this._pinDist=pinDist;break;case 2:this._mode="properties";propSet.add("angle");this._dAngle=myStartAngle-theirStartAngle;this._lastKnownAngle=o["lka"];break;case 3:this._mode="rope";this._pinDist=o["pd"];break;case 4:this._mode="bar";this._pinDist=o["pd"];break}}_OnAfterLoad(){if(this._pinUid===-1)this._SetPinInst(null);else{this._SetPinInst(this._runtime.GetInstanceByUID(this._pinUid));this._pinUid=-1}}_OnInstanceDestroyed(inst){if(this._pinInst===inst){this._SetPinInst(null);
+if(this._destroy)this._runtime.DestroyInstance(this._inst)}}Tick2(){const pinInst=this._pinInst;if(!pinInst)return;const pinWi=pinInst.GetWorldInfo();const myInst=this._inst;const myWi=myInst.GetWorldInfo();const mode=this._mode;let bboxChanged=false;if(mode==="rope"||mode==="bar"){const dist=C3.distanceTo(myWi.GetX(),myWi.GetY(),pinWi.GetX(),pinWi.GetY());if(dist>this._pinDist||mode==="bar"&&dist<this._pinDist){const a=C3.angleTo(pinWi.GetX(),pinWi.GetY(),myWi.GetX(),myWi.GetY());myWi.SetXY(pinWi.GetX()+
+Math.cos(a)*this._pinDist,pinWi.GetY()+Math.sin(a)*this._pinDist);bboxChanged=true}}else{const propSet=this._propSet;let v=0;if(propSet.has("imagepoint")){const [newX,newY]=pinInst.GetImagePoint(this._pinImagePoint);if(!myWi.EqualsXY(newX,newY)){myWi.SetXY(newX,newY);bboxChanged=true}}else if(propSet.has("x")&&propSet.has("y")){const newX=pinWi.GetX()+Math.cos(pinWi.GetAngle()+this._pinAngle)*this._pinDist;const newY=pinWi.GetY()+Math.sin(pinWi.GetAngle()+this._pinAngle)*this._pinDist;if(!myWi.EqualsXY(newX,
+newY)){myWi.SetXY(newX,newY);bboxChanged=true}}else{v=pinWi.GetX()+this._dx;if(propSet.has("x")&&v!==myWi.GetX()){myWi.SetX(v);bboxChanged=true}v=pinWi.GetY()+this._dy;if(propSet.has("y")&&v!==myWi.GetY()){myWi.SetY(v);bboxChanged=true}}if(propSet.has("angle")){if(this._lastKnownAngle!==myWi.GetAngle())this._dAngle=C3.clampAngle(this._dAngle+(myWi.GetAngle()-this._lastKnownAngle));v=C3.clampAngle(pinWi.GetAngle()+this._dAngle);if(v!==myWi.GetAngle()){myWi.SetAngle(v);bboxChanged=true}this._lastKnownAngle=
+myWi.GetAngle()}if(propSet.has("width-abs")){v=pinWi.GetWidth()+this._dWidth;if(v!==myWi.GetWidth()){myWi.SetWidth(v);bboxChanged=true}}if(propSet.has("width-scale")){v=pinWi.GetWidth()*this._dWidth;if(v!==myWi.GetWidth()){myWi.SetWidth(v);bboxChanged=true}}if(propSet.has("height-abs")){v=pinWi.GetHeight()+this._dHeight;if(v!==myWi.GetHeight()){myWi.SetHeight(v);bboxChanged=true}}if(propSet.has("height-scale")){v=pinWi.GetHeight()*this._dHeight;if(v!==myWi.GetHeight()){myWi.SetHeight(v);bboxChanged=
+true}}if(propSet.has("z")){v=pinWi.GetZElevation()+this._dz;if(v!==myWi.GetZElevation()){myWi.SetZElevation(v);this._runtime.UpdateRender()}}}if(bboxChanged)myWi.SetBboxChanged()}GetDebuggerProperties(){const prefix="behaviors.pin.debugger";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".is-pinned",value:!!this._pinInst},{name:prefix+".pinned-uid",value:this._pinInst?this._pinInst.GetUID():0}]}]}}}
+{const C3=self.C3;C3.Behaviors.Pin.Cnds={IsPinned(){return!!this._pinInst},WillDestroy(){return this._destroy}}}
+{const C3=self.C3;C3.Behaviors.Pin.Acts={PinByDistance(objectClass,mode){this._Pin(objectClass,mode===0?"rope":"bar")},PinByProperties(objectClass,ex,ey,ea,ew,eh,ez){const propList=[];if(ex)propList.push("x");if(ey)propList.push("y");if(ea)propList.push("angle");if(ez)propList.push("z");if(ew===1)propList.push("width-abs");else if(ew===2)propList.push("width-scale");if(eh===1)propList.push("height-abs");else if(eh===2)propList.push("height-scale");if(propList.length===0)return;this._Pin(objectClass,
+"properties",propList)},PinByImagePoint(objectClass,imgPt,ea,ew,eh,ez){const propList=["imagepoint"];if(ea)propList.push("angle");if(ez)propList.push("z");if(ew===1)propList.push("width-abs");else if(ew===2)propList.push("width-scale");if(eh===1)propList.push("height-abs");else if(eh===2)propList.push("height-scale");this._pinImagePoint=imgPt;this._Pin(objectClass,"properties",propList)},SetPinDistance(d){if(this._mode==="rope"||this._mode==="bar")this._pinDist=Math.max(d,0)},SetDestroy(d){this._destroy=
+d},Unpin(){this._SetPinInst(null);this._mode="";this._propSet.clear();this._pinImagePoint=""},Pin(objectClass,mode){switch(mode){case 0:this._Pin(objectClass,"properties",["x","y","angle"]);break;case 1:this._Pin(objectClass,"properties",["x","y"]);break;case 2:this._Pin(objectClass,"properties",["angle"]);break;case 3:this._Pin(objectClass,"rope");break;case 4:this._Pin(objectClass,"bar");break}}}}{const C3=self.C3;C3.Behaviors.Pin.Exps={PinnedUID(){return this._pinInst?this._pinInst.GetUID():-1}}};
+
+}
+
+{
+'use strict';{const C3=self.C3;C3.Behaviors.Rotate=class RotateBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Rotate.Type=class RotateType extends C3.SDKBehaviorTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const IBehaviorInstance=self.IBehaviorInstance;const SPEED=0;const ACCELERATION=1;const ENABLE=2;C3.Behaviors.Rotate.Instance=class RotateInstance extends C3.SDKBehaviorInstanceBase{constructor(inst,properties){super(inst);this._speed=0;this._acceleration=0;this._isEnabled=true;if(properties){this._speed=C3.toRadians(properties[SPEED]);this._acceleration=C3.toRadians(properties[ACCELERATION]);this._isEnabled=properties[ENABLE]}if(this._isEnabled)this._StartTicking()}Release(){super.Release()}_SetSpeed(s){this._speed=
+s}_GetSpeed(){return this._speed}_SetAcceleration(a){this._acceleration=a}_GetAcceleration(){return this._acceleration}SaveToJson(){return{"s":this._speed,"a":this._acceleration,"e":this._isEnabled}}LoadFromJson(o){this._speed=o["s"];this._acceleration=o["a"];this._SetEnabled(o["e"])}Tick(){if(!this._isEnabled)return;const dt=this._runtime.GetDt(this._inst);if(dt===0)return;if(this._acceleration!==0)this._speed+=this._acceleration*dt;if(this._speed!==0){const wi=this._inst.GetWorldInfo();wi.SetAngle(wi.GetAngle()+
+this._speed*dt);wi.SetBboxChanged()}}GetPropertyValueByIndex(index){switch(index){case SPEED:return C3.toDegrees(this._GetSpeed());case ACCELERATION:return C3.toDegrees(this._GetAcceleration());case ENABLE:return this._IsEnabled()}}SetPropertyValueByIndex(index,value){switch(index){case SPEED:this._SetSpeed(C3.toRadians(value));break;case ACCELERATION:this._SetAcceleration(C3.toRadians(value));break;case ENABLE:this._SetEnabled(value);break}}_SetEnabled(e){this._isEnabled=!!e;if(this._isEnabled)this._StartTicking();
+else this._StopTicking()}_IsEnabled(){return this._isEnabled}GetDebuggerProperties(){const prefix="behaviors.rotate";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".properties.speed.name",value:C3.toDegrees(this._GetSpeed()),onedit:v=>this._SetSpeed(C3.toRadians(v))},{name:prefix+".properties.acceleration.name",value:C3.toDegrees(this._GetAcceleration()),onedit:v=>this._SetAcceleration(C3.toRadians(v))},{name:prefix+".properties.enabled.name",value:this._IsEnabled(),
+onedit:v=>this._SetEnabled(v)}]}]}GetScriptInterfaceClass(){return self.IRotateBehaviorInstance}};const map=new WeakMap;self.IRotateBehaviorInstance=class IRotateBehaviorInstance extends IBehaviorInstance{constructor(){super();map.set(this,IBehaviorInstance._GetInitInst().GetSdkInstance())}set speed(s){C3X.RequireFiniteNumber(s);map.get(this)._SetSpeed(s)}get speed(){return map.get(this)._GetSpeed()}set acceleration(a){C3X.RequireFiniteNumber(a);map.get(this)._SetAcceleration(a)}get acceleration(){return map.get(this)._GetAcceleration()}get isEnabled(){return map.get(this)._IsEnabled()}set isEnabled(e){map.get(this)._SetEnabled(e)}}}
+{const C3=self.C3;C3.Behaviors.Rotate.Cnds={IsEnabled(){return this._IsEnabled()}}}{const C3=self.C3;C3.Behaviors.Rotate.Acts={SetSpeed(s){this._SetSpeed(C3.toRadians(s))},SetAcceleration(a){this._SetAcceleration(C3.toRadians(a))},SetEnabled(e){this._SetEnabled(e)}}}{const C3=self.C3;C3.Behaviors.Rotate.Exps={Speed(){return C3.toDegrees(this._GetSpeed())},Acceleration(){return C3.toDegrees(this._GetAcceleration())}}};
+
+}
+
+{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
 		C3.Plugins.Sprite,
 		C3.Behaviors.DragnDrop,
+		C3.Behaviors.Tween,
 		C3.Behaviors.Pin,
 		C3.Plugins.Text,
 		C3.Plugins.Globals,
 		C3.Behaviors.Rotate,
-		C3.Behaviors.Tween,
 		C3.Plugins.Touch,
 		C3.Plugins.Button,
 		C3.Plugins.TextBox,
+		C3.Plugins.AdvancedRandom,
 		C3.Behaviors.DragnDrop.Cnds.OnDragStart,
 		C3.Plugins.Globals.Acts.SetInstanceVar,
-		C3.Plugins.Text.Acts.SetText,
 		C3.Plugins.Sprite.Acts.SetVisible,
 		C3.Behaviors.DragnDrop.Cnds.OnDrop,
 		C3.Plugins.Sprite.Cnds.IsOverlapping,
-		C3.Plugins.Sprite.Acts.SetPosToObject,
+		C3.Behaviors.Tween.Acts.TweenTwoProperties,
+		C3.Plugins.Sprite.Exps.X,
+		C3.Plugins.Sprite.Exps.Y,
+		C3.Plugins.Globals.Cnds.CompareInstanceVar,
 		C3.Plugins.System.Cnds.ForEachOrdered,
 		C3.Plugins.Sprite.Exps.IID,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
 		C3.Plugins.Globals.Acts.AddInstanceVar,
+		C3.Plugins.Touch.Cnds.OnTapGestureObject,
+		C3.Plugins.System.Acts.GoToLayout,
+		C3.Plugins.Text.Acts.SetText,
+		C3.Plugins.System.Exps.tokenat,
+		C3.Plugins.AdvancedRandom.Exps.Permutation,
+		C3.Plugins.System.Acts.AddVar,
+		C3.Plugins.Text.Exps.Text,
+		C3.Plugins.System.Acts.RestartLayout,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Behaviors.Pin.Acts.PinByProperties,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Sprite.Cnds.PickByUID,
 		C3.Behaviors.DragnDrop.Cnds.IsDragging,
 		C3.Plugins.Sprite.Acts.SetPos,
-		C3.Plugins.Sprite.Exps.X,
-		C3.Plugins.Sprite.Exps.Y,
-		C3.Plugins.Touch.Cnds.OnTapGestureObject,
-		C3.Plugins.Globals.Cnds.CompareInstanceVar,
-		C3.Plugins.System.Acts.GoToLayout,
 		C3.Plugins.Touch.Cnds.OnHoldGesture,
 		C3.Behaviors.Tween.Acts.TweenOneProperty,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
 		C3.Plugins.Button.Cnds.OnClicked,
-		C3.Plugins.System.Acts.GoToLayoutByName,
-		C3.Plugins.TextBox.Exps.Text
+		C3.Plugins.Text.Acts.SetFontColor,
+		C3.Plugins.System.Exps.int,
+		C3.Plugins.AdvancedRandom.Acts.CreatePermutationTable,
+		C3.Plugins.Touch.Cnds.OnDoubleTapGestureObject
 	];
 };
 self.C3_JsPropNameTable = [
 	{backgroundStage2: 0},
 	{DragDrop: 0},
+	{Tween: 0},
 	{animals_stage2: 0},
 	{id: 0},
 	{s2: 0},
 	{Pin: 0},
 	{Stage2_target: 0},
-	{Text: 0},
+	{stud_name: 0},
 	{correct: 0},
 	{is_0: 0},
 	{is_1: 0},
@@ -4357,7 +4412,6 @@ self.C3_JsPropNameTable = [
 	{Sprite: 0},
 	{zoom_eff: 0},
 	{glass: 0},
-	{Tween: 0},
 	{check: 0},
 	{Touch: 0},
 	{info_ui: 0},
@@ -4367,7 +4421,20 @@ self.C3_JsPropNameTable = [
 	{xray: 0},
 	{xray_eff: 0},
 	{Button: 0},
-	{TextInput: 0}
+	{TextInput: 0},
+	{group: 0},
+	{Group: 0},
+	{Variable1: 0},
+	{group1: 0},
+	{group2: 0},
+	{group3: 0},
+	{group4: 0},
+	{stud_num: 0},
+	{names: 0},
+	{AdvancedRandom: 0},
+	{results1: 0},
+	{Text: 0},
+	{res: 0}
 ];
 }
 
@@ -4469,15 +4536,41 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => 0,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpInstVar();
-		},
+		() => "",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
 		},
+		() => 0.1,
 		() => 1,
+		() => 6,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpInstVar();
+		},
+		() => 4,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			const n2 = p._GetNode(2);
+			const f3 = p._GetNode(3).GetBoundMethod();
+			const n4 = p._GetNode(4);
+			return () => f0(n1.ExpInstVar(), ((5 * (n2.ExpInstVar() - 1)) + f3(n4.ExpInstVar())), "-");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => ((and((n0.ExpObject() + "  "), n1.ExpInstVar()) + "/6") + "\n");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => and("المجموعة: ", n0.ExpInstVar());
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => ((((n0.ExpInstVar()) === (4) ? 1 : 0)) ? (0) : ((n1.ExpInstVar() + 1)));
+		},
 		() => 25,
 		p => {
 			const n0 = p._GetNode(0);
@@ -4496,13 +4589,20 @@ self.C3_ExpressionFuncs = [
 			return () => (-n0.ExpObject());
 		},
 		() => -1,
-		() => "",
 		() => 651,
 		() => 0.05,
 		() => 631,
+		() => -281474976711679,
 		p => {
-			const n0 = p._GetNode(0);
-			return () => ("Layout " + n0.ExpObject());
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(n1.ExpObject());
+		},
+		() => 5,
+		() => -1023,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => v0.GetValue();
 		}
 ];
 
